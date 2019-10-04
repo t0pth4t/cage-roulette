@@ -6,7 +6,7 @@ import style from './style';
 
 const Header = () => (
   <header class={style.header}>
-  <img alt='cage' style={{width:'45px'}} src={cage} />
+    <img alt='cage' style={{ width: '45px' }} src={cage} />
     <h1>Cage Roulette</h1>
     <nav>
       <Link activeClassName={style.active} href='/'>

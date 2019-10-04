@@ -6,7 +6,7 @@ export default class Movies extends Component {
   state = {
     currentMovie: null,
     movieIds: movieIds,
-    moviesSwap: []    
+    moviesSwap: []
   };
 
   shuffle = a => {
@@ -60,7 +60,7 @@ export default class Movies extends Component {
       movieIds: movieIds.length > 0 ? movieIds : moviesSwap,
       moviesSwap: movieIds.length > 0 ? moviesSwap : []
     });
-  }
+  };
 
   async componentWillMount() {
     const { movieIds, moviesSwap } = this.state;
