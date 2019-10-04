@@ -6,7 +6,7 @@ export default class Movies extends Component {
   state = {
     currentMovie: null,
     movieIds: movieIds,
-    moviesSwap: []
+    moviesSwap: []    
   };
 
   shuffle = a => {
@@ -38,6 +38,30 @@ export default class Movies extends Component {
     });
   };
 
+  seenIt = async () => {
+    const { movieIds, moviesSwap } = this.state;
+    //remove last movie added to swap because its the current movie
+    moviesSwap.pop();
+
+    const shuffled = this.shuffle(movieIds);
+    const randomId = shuffled.pop();
+    moviesSwap.push(randomId);
+
+    const response = await fetch(
+      'https://www.omdbapi.com/?apikey=e69cd32d&i=' + randomId
+    );
+    if (response.status !== 200) {
+      console.error('failed to fetch');
+      return;
+    }
+
+    this.setState({
+      currentMovie: await response.json(),
+      movieIds: movieIds.length > 0 ? movieIds : moviesSwap,
+      moviesSwap: movieIds.length > 0 ? moviesSwap : []
+    });
+  }
+
   async componentWillMount() {
     const { movieIds, moviesSwap } = this.state;
     const shuffled = this.shuffle(movieIds);
@@ -66,7 +90,7 @@ export default class Movies extends Component {
         <div class={style.row}>
           <div class={style.flexitem}>
             <h1>
-              {Title} - {Year}
+              {Title} ({Year})
             </h1>
           </div>
 
@@ -82,6 +106,9 @@ export default class Movies extends Component {
           ))}
           <button class={style.button} onClick={this.nope}>
             Nope
+          </button>
+          <button class={style.button} onClick={this.seenIt}>
+            Seen It Already
           </button>
         </div>
       </div>
